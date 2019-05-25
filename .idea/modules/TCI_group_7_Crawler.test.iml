@@ -16,5 +16,4 @@
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:2.1" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest:2.1" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="TCI_group_7_Crawler.main" />
 </module>
