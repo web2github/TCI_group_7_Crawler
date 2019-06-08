@@ -1,59 +1,38 @@
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
 public class ScraperTest {
+    //CONTENTS OF SCRAPER CLASS, CHANGE NAME
 
-    @Test
-    public void getTimeElapseInDouble(){
+    /* 1.get content from Scraper.class
+     *  2.search through content
+     *  3.return results to the user
+     * */
 
-    }
-    /*Total number of pages while crawling
-    * Default number of webpages returned is not null
-    * When URL is invalid throw exception
-    * Number of unique webpages is shown
-    */
-    /* Main functionality*/
-    @Test
-    public void numberOfUniqueWebpagesIsNotNullWhileCrawling(){
-
-    }
-    /* Main functionality*/
-    @Test
-    public void keepTrackOfNumbersOfPagesVisited(){
-
-    }
     /*Main functionality*/
     @Test
-    public void timeElapsedAfterTheLatestCrawl(){
-
+    public void shouldReturnEmptyStringWhenCrawlResultsIsEmpty() {
     }
-    @Test
-    public void defaultNumberOfPagesIsNotNullAndNotEmpty(){
 
-    }
     @Test
-    public void defaultNumberOfDepthIsZero(){
+    public void illegalArgumentExceptionThrownWhenCrawlerResultIsEmptyOrNotFound() {
+    }
 
-    }
     @Test
-    public void illegalArgumentExceptionThrownWhenURLIsEmpty(){
+    public void assertThatBookContentFromScraperIsEqualToBookContentWhenCreate() {
 
     }
 
     @Test
-    public void timeElapsedAfterTheLatestCrawlIsNotNullAndNotEmpty(){
+    public void assertThatMovieContentFromScraperIsEqualToMovieContentWhenCreate() {
 
     }
+
     @Test
-    public void contentOfTheWebPageIsNotNullandNotEmpty() {
+    public void assertThatMusicContentFromScraperIsEqualToMusicContentWhenCreated() {
 
     }
-
 }
+
