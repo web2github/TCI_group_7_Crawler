@@ -4,34 +4,69 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CrawlerTest {
-    /* 1.get content from Scraper.class
-    *  2.search through content
-    *  3.return results to the user
-    * */
+    @Test
 
+    public void contentOfTheWebPageIsNotNullandNotEmpty() {
+        // public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid()
+    }
+
+
+    @Test
+
+    public void getTimeElapseInDouble() {
+    }
+
+    /*Total number of pages while crawling
+     * Default number of webpages returned is not null
+     * When URL is invalid throw exception
+     * Number of unique webpages is shown
+     */
+    /* Main functionality*/
+
+
+    @Test
+    public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() {
+
+
+    }
+
+
+    @Test
+    public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() {
+    }
+
+    /* Main functionality*/
+
+
+    @Test
+    public void keepTrackOfNumberOfPageVisitedWhenCrawlingTheEntireWebsite() {
+    }
+
+
+    @Test
+    public void whenCrawlingOnePageTheNumberOfPagesVisitedIsOne() {
+    }
     /*Main functionality*/
-    @Test
-    public void shouldReturnCrawlResultsAsString(){
 
-    }
-    @Test
-    public void shouldReturnEmptyStringWhenCrawlResultsIsEmptyOrNotFound(){
 
-    }
     @Test
-    public void assertThatBookContentFromScraperIsEqualToBookContentWhenCreate(){
-
+    public void timeElapsedAfterCrawlingIsLessThanOne() {
     }
+
+
     @Test
-    public void assertThatMovieContentFromScraperIsEqualToMovieContentWhenCreate(){
-
+    public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
     }
+
+
     @Test
-    public void assertThatMusicContentFromScraperIsEqualToMusicContentWhenCreated(){
-
+    public void illegalArgumentExceptionThrownWhenURLIsInvalidOrNoneExisting() {
     }
+
+
     @Test
-    public void shouldReachSearchDepthMaximumLevelFirst(){
-
+    public void timeElapsedAfterTheLatestCrawlIsNotNullAndNotEmpty() {
     }
+
+
 }
