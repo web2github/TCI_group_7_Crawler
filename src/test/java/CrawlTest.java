@@ -1,19 +1,19 @@
-
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-public class CrawlerTest {
-    @Test
+//CONTENTS OF CRAWLER CLASS, CHANGE NAME
+public class CrawlTest {
 
+    @Test
     public void contentOfTheWebPageIsNotNullandNotEmpty() {
         // public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid()
     }
 
-
     @Test
-
     public void getTimeElapseInDouble() {
+
     }
 
     /*Total number of pages while crawling
@@ -22,50 +22,41 @@ public class CrawlerTest {
      * Number of unique webpages is shown
      */
     /* Main functionality*/
-
-
     @Test
     public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() {
 
-
     }
-
 
     @Test
     public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() {
+
     }
 
     /* Main functionality*/
-
-
     @Test
     public void keepTrackOfNumberOfPageVisitedWhenCrawlingTheEntireWebsite() {
     }
 
-
     @Test
     public void whenCrawlingOnePageTheNumberOfPagesVisitedIsOne() {
     }
+
     /*Main functionality*/
-
-
     @Test
     public void timeElapsedAfterCrawlingIsLessThanOne() {
     }
-
 
     @Test
     public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
     }
 
-
     @Test
     public void illegalArgumentExceptionThrownWhenURLIsInvalidOrNoneExisting() {
     }
 
-
     @Test
     public void timeElapsedAfterTheLatestCrawlIsNotNullAndNotEmpty() {
+
     }
 
 
