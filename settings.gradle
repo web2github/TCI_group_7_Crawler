@@ -1,2 +1,3 @@
 rootProject.name = 'TCI_group_7_Crawler'
+include 'TCI_group_7_ServiceCrawler'
 

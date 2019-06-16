@@ -6,10 +6,14 @@ public class Music extends AbstractContent{
 
     private String artist;
 
+    public Music(String context) {
+        super();
+    }
+
 
     //Method to return the artist.
-    public String getArtist(){
-        return artist;
+    public String getArtist() {
+        return null;
     }
 
 }

@@ -7,10 +7,11 @@ public abstract class AbstractContent {
     //Year
     //Director
 
-    public String genre;
-    public String format;
-    public int year;
-    public String director;
+    private String genre;
+    private String format;
+    private int year;
+    private String director;
+    private String title;
 
 
     //Method which returns the genre.
@@ -35,5 +36,7 @@ public abstract class AbstractContent {
         return director;
     }
 
-
+    public String getTitle() {
+        return title;
+    }
 }
