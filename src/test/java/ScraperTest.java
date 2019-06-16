@@ -1,7 +1,5 @@
-
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 
 public class ScraperTest {
     //CONTENTS OF SCRAPER CLASS, CHANGE NAME
@@ -14,6 +12,7 @@ public class ScraperTest {
     /*Main functionality*/
     @Test
     public void shouldReturnEmptyStringWhenCrawlResultsIsEmpty() {
+
     }
 
     @Test

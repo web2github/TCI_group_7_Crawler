@@ -15,17 +15,17 @@ public class CrawlTest {
     @Test
     public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid(){
         // ARRANGE
-        Crawler crawler = new Crawler(VALID_URL,VALID_TIME_ELAPSED);
+        Crawler crawler = new Crawler(VALID_URL);
         //ACT
-        crawler.OpenUrl();
         //ASSERT
-        assertEquals(VALID_PAGE_CONTENT, crawler.getWebPageContent());
+        //assertEquals(VALID_PAGE_CONTENT, crawler.getPageLink(VALID_URL));
+        assertThat(VALID_URL,is(notNullValue()));
 
     }
     @Test (expected = IllegalArgumentException.class)
     public void illegalArgumentExceptionThrownWhenURLIsInvalidOrNoneExisting() {
         //ARRANGE
-        Crawler crawler = new Crawler("https//:validurl.com",VALID_TIME_ELAPSED);
+        Crawler crawler = new Crawler("https//:validurl.com");
         //ACT
         //ASSERT
 
@@ -35,7 +35,7 @@ public class CrawlTest {
     @Test (expected = IllegalArgumentException.class)
     public void TimeElapsedIsInDouble() {
         //ARRANGE
-        Crawler crawler = new Crawler(VALID_URL, 1^5);
+        Crawler crawler = new Crawler(VALID_URL);
         //ACT
         //ASSERT
     }
@@ -43,7 +43,7 @@ public class CrawlTest {
     @Test (expected = IllegalArgumentException.class)
     public void TimeElapsedIsNotNegative(){
         //ARRANGE
-        Crawler crawler = new Crawler(VALID_URL, -12.12);
+        Crawler crawler = new Crawler(VALID_URL);
         //ACT
         //ASSERT
     }
@@ -52,7 +52,7 @@ public class CrawlTest {
     @Test
     public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() {
         //ARRANGE
-        Crawler crawler = new Crawler(VALID_URL,VALID_TIME_ELAPSED);
+        Crawler crawler = new Crawler(VALID_URL);
         //ACT
         //ASSERT
         assertEquals("site has more than one page",1,crawler.getNumberOfPages());
@@ -61,7 +61,7 @@ public class CrawlTest {
     @Test
     public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() {
         //ARRANGE
-        Crawler crawler = new Crawler(VALID_URL,VALID_TIME_ELAPSED);
+        Crawler crawler = new Crawler(VALID_URL);
         //ACT
         //ASSERT
         assertThat(crawler.getNumberOfPages(), greaterThan(1));
@@ -71,7 +71,7 @@ public class CrawlTest {
     @Test
     public void keepTrackOfNumberOfPageVisitedWhenCrawlingTheEntireWebsite() {
         //ARRANGE
-        Crawler crawler = new Crawler(VALID_URL,VALID_TIME_ELAPSED);
+        Crawler crawler = new Crawler(VALID_URL);
         int min = 0;
         int max = 100;
         //ACT
@@ -86,9 +86,9 @@ public class CrawlTest {
     @Test
     public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
         //ARRANGE
-        Crawler crawler = new Crawler(VALID_URL,VALID_TIME_ELAPSED);
+        Crawler crawler = new Crawler(VALID_URL);
         //ACT
-        crawler.crawl();
+        crawler.crawl(VALID_URL);
         //ASSERT
         assertEquals("site has more than one page",1,crawler.getNumberOfPages());
         assertEquals(0,crawler.getDepth());
@@ -99,9 +99,9 @@ public class CrawlTest {
     @Test
     public void timeElapsedAfterCrawlingIsNotNull() {
         //ARRANGE
-        Crawler crawler = new Crawler(VALID_URL,VALID_TIME_ELAPSED);
+        Crawler crawler = new Crawler(VALID_URL);
         //ACT
-        crawler.crawl();
+        crawler.crawl(VALID_URL);
         //ASSERT
         assertThat(crawler.getTimeElapsed(), is(notNullValue()));
 
