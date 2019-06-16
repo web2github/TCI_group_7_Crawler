@@ -15,7 +15,7 @@ public class Crawler {
 
     //public static void main (String[] args){}
 
-    private String urlLink;
+    private String url;
     private double time;
     private Jsoup jsoup;
     private JSONParser json;
@@ -25,14 +25,39 @@ public class Crawler {
 
     public Timer timer = new Timer();
 
-    public Crawler(String url)
-    {
-        urlLink = url;
+    public Crawler(String url) {
+        this.url = url;
     }
 
 
+    public void crawl(String url) {
+        //starts the crawling
+
+        timer.start();
+        getPageLink(url);
+        getLinks();
+        timer.stop();
+
+        getNumberOfPages();
+        getDepth();
+        getTimeElapsed();
+        getUniquePages();
+
+    }
+
+    public boolean isConnect() {
+        Connection.Response response = Jsoup.connect(url).response();
+        if (response.statusCode() == 200) {
+            return true;
+        } else {
+            throw new IllegalArgumentException("The URL link is unable to connect");
+        }
+    }
+
+
+    //change to addtoPageLinks() so it can be used in CrawlWholeSite()
     public void getPageLink(String newLink) {
-        //returns a document with the links that the scraper uses to retrieve the information of the link page
+        //returns a document with the link that the scraper uses to retrieve the information of the link page
         try {
             Connection connection = Jsoup.connect(newLink).userAgent(USER_AGENT);
             Document htmlDocument = connection.get();
@@ -40,11 +65,9 @@ public class Crawler {
 
             Elements linksOnPage = htmlDocument.select("a[href]");
             System.out.println("Found (" + linksOnPage.size() + ") links");
-            for(Element link : linksOnPage)
-            {
+            for (Element link : linksOnPage) {
                 this.links.add(link.absUrl("href"));
             }
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,20 +80,6 @@ public class Crawler {
         return time;
     }
 
-    public void crawl(String url) {
-        //starts the crawling
-
-        timer.start();
-            getPageLink(url);
-            getLinks();
-        timer.stop();
-
-        getNumberOfPages();
-        getDepth();
-        getTimeElapsed();
-        getUniquePages();
-
-    }
 
     private int getUniquePages() {
         return 0;
@@ -87,8 +96,7 @@ public class Crawler {
         return 1;
     }
 
-    public List<String> getLinks()
-    {
+    public List<String> getLinks() {
         return this.links;
     }
 }

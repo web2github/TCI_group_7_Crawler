@@ -2,3 +2,19 @@
 \.idea/workspace\.xml
 
 \.idea/uiDesigner\.xml
+
+\.gradle/4\.10\.3/fileContent/
+
+\.gradle/4\.10\.3/fileHashes/
+
+\.idea/libraries/
+
+\.idea/modules/
+
+\.gradle/buildOutputCleanup/
+
+\.gradle/4\.10\.3/taskHistory/
+
+\.gradle/4\.10\.3/javaCompile/
+
+*.bin
