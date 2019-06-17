@@ -4,8 +4,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-
 public class Scraper {
     //use Crawler to call ListJSONObject.add(Scraper.getContentAsString(getHrefElement()))
     public JsonObject searchContent(Document doc, String keyword) {
@@ -23,7 +21,6 @@ public class Scraper {
 
     public String getContentAsString(Document doc) {
 
-//        Document doc = Jsoup.connect("https://www.codetriage.com/?language=Java").get();
         // With the document fetched, we use JSoup's title() method to fetch the title
         System.out.printf("Title: %s\n", doc.title());
         // Get the list of repositories

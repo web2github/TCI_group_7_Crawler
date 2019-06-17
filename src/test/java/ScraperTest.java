@@ -1,6 +1,7 @@
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,12 +31,11 @@ public class ScraperTest {
      *  3.return results to the user
      * */
 
-    /*Main functionality*/
     @Test
     public void shouldReturnEmptyStringWhenCrawlResultsIsEmpty() {
-//        Scraper mockedScraper = mock(Scraper.class);
-//        when(mockedScraper.getContentAsString()).thenReturn("");
-
+        Document document = new Document("");
+        Scraper mockedScraper = mock(Scraper.class);
+        when(mockedScraper.getContentAsString(document)).thenReturn("");
     }
 
     @Test
