@@ -17,7 +17,8 @@ public class Pointer {
     }
 
     public JsonObject crawlWholeSite() {
-        crawler.getPageLink(url + "/catalog.php");
+
+        crawler.addToPageLinks(url + "/catalog.php");
         for (int i = 0; i < crawler.getLinks().size(); i++) {
 //            scraper.setContent((url + "/" + crawler.getLinks().get(i)));
 //            scraper.getContent();

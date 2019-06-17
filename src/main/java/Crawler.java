@@ -6,9 +6,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
+import static sun.plugin.javascript.navig.JSType.URL;
 
 
 public class Crawler {
@@ -21,7 +24,10 @@ public class Crawler {
     private JSONParser json;
     private List<String> links;
     private Document doc;
-    private int depth;
+    private int depth = 0;
+    private Set<String> uniquePages = new HashSet<String>();
+    private static final int MAX_DEPTH = 50;
+    private int finalDepth;;
 
     public Timer timer = new Timer();
 
@@ -32,16 +38,23 @@ public class Crawler {
 
     public void crawl(String url) {
         //starts the crawling
-
         timer.start();
-        getPageLink(url);
-        getLinks();
-        timer.stop();
-
+        while(this.uniquePages.size() < links.size()) {
+            String currentUrl;
+            if (this.links.isEmpty()) {
+                currentUrl = url;
+                this.uniquePages.add(url);
+            } else {
+                currentUrl = this.nextUrl();
+            }
+            addToPageLinks(currentUrl);
+            this.links.addAll(getLinks());
+        }
+        getUniquePages();
         getNumberOfPages();
         getDepth();
+        timer.stop();
         getTimeElapsed();
-        getUniquePages();
 
     }
 
@@ -56,22 +69,29 @@ public class Crawler {
 
 
     //change to addtoPageLinks() so it can be used in CrawlWholeSite()
-    public void getPageLink(String newLink) {
+    public void addToPageLinks(String newLink) {
         //returns a document with the link that the scraper uses to retrieve the information of the link page
-        try {
-            Connection connection = Jsoup.connect(newLink).userAgent(USER_AGENT);
-            Document htmlDocument = connection.get();
-            this.doc = htmlDocument;
+        if ((!links.contains(URL) && (depth < MAX_DEPTH))) {
+            System.out.println(">> Depth: " + depth + " [" + URL + "]");
 
-            Elements linksOnPage = htmlDocument.select("a[href]");
-            System.out.println("Found (" + linksOnPage.size() + ") links");
-            for (Element link : linksOnPage) {
-                this.links.add(link.absUrl("href"));
+            try {
+                Connection connection = Jsoup.connect(newLink).userAgent(USER_AGENT);
+                Document htmlDocument = connection.get();
+                this.doc = htmlDocument;
+
+                Elements linksOnPage = htmlDocument.select("a[href]");
+                //System.out.println("Found (" + linksOnPage.size() + ") links");
+                depth++;
+                for (Element link : linksOnPage) {
+                    this.links.add(link.absUrl("href"));
+
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        finalDepth = depth;
     }
 
     public double getTimeElapsed() {
@@ -82,7 +102,7 @@ public class Crawler {
 
 
     private int getUniquePages() {
-        return 0;
+        return uniquePages.size();
     }
 
     public int getNumberOfPages() {
@@ -90,10 +110,21 @@ public class Crawler {
         return links.size();
     }
 
+    public int getDepth()
+    {
+        return finalDepth;
+    }
 
-    public int getDepth() {
-        //returns the depth value of the crawl
-        return 1;
+
+    private String nextUrl()
+    {
+        String nextUrl;
+        do
+        {
+            nextUrl = this.links.remove(0);
+        } while(this.links.contains(nextUrl));
+        this.uniquePages.add(nextUrl);
+        return nextUrl;
     }
 
     public List<String> getLinks() {
