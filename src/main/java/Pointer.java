@@ -31,10 +31,11 @@ public class Pointer {
     }
 
     public JsonObject crawlWholeSite() throws IOException {
+//        url = url.concat("catalog.php");
         timer = new Timer();
         timer.start();
         while (true) {
-            crawler.crawl();
+            crawler.crawl(url);
             if (crawler.getUniquePages() < crawler.getNumberOfPages()) {
                 break;
             }
@@ -48,7 +49,7 @@ public class Pointer {
     public JsonObject crawlForAContent(String typeOfContent, String keyword) {
         if (crawler.getListJSONObject().size() != 0) {
 
-            return crawler.getListJSONObject().get(0);
+           return new JsonParser().parse(crawler.getListJSONObject().get(0)).getAsJsonObject();
         } else {
             return jsonObject;
         }

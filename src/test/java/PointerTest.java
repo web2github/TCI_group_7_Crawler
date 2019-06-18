@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class PointerTest {
@@ -16,7 +17,7 @@ public class PointerTest {
     @Before
     public void setUp() {
         pointer = new Pointer("http://localhost:8082/sample_site_to_crawl/");
-        crawler = new Crawler("http://localhost:8082/sample_site_to_crawl/");
+//        crawler = new Crawler("http://localhost:8082/sample_site_to_crawl/");
         scraper = new Scraper();
     }
 
@@ -24,7 +25,9 @@ public class PointerTest {
     public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid() throws IOException {
         //ARRANGE
         //ACT
-        pointer.crawlWholeSite();
+        assertNotNull(
+                pointer.crawlWholeSite());
+
         //ASSERT
 //        assertEquals(VALID_PAGE_CONTENT, crawler.addToPageLinks(VALID_URL));
     }

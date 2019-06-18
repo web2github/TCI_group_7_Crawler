@@ -49,18 +49,21 @@ public class CrawlTest {
 
     /* Main functionality*/
     @Test
-    public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() {
+    public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() throws IOException {
         //ARRANGE
         //ACT
         //ASSERT
-        assertEquals("site has more than one page", 1, crawler.getNumberOfPages());
+        crawler.crawl(VALID_URL);
+        assertEquals("site has more than one page", 1, crawler.getUniquePages());
     }
 
     @Test
-    public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() {
+    public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() throws IOException {
         //ARRANGE
         //ACT
         //ASSERT
+        crawler.crawl(VALID_URL);
+
         assertThat(crawler.getNumberOfPages(), greaterThan(1));
     }
 
@@ -80,7 +83,7 @@ public class CrawlTest {
     public void depthResultsIsZeroWhenCrawlingThroughOnePage() throws IOException {
         //ARRANGE
         //ACT
-        crawler.crawl();
+        crawler.crawl("");
         //ASSERT
         assertEquals("site has more than one page", 1, crawler.getNumberOfPages());
         assertEquals(0, crawler.getDepth());

@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -32,10 +34,10 @@ public class ScraperTest {
      * */
 
     @Test
-    public void shouldReturnEmptyStringWhenCrawlResultsIsEmpty() {
+    public void shouldReturnEmptyStringWhenCrawlResultsIsEmpty() throws IOException {
         Document document = new Document("");
         Scraper mockedScraper = mock(Scraper.class);
-        when(mockedScraper.getContentAsString(document)).thenReturn(jsonParser.parse("").getAsJsonObject());
+        when(mockedScraper.getContentAsString("")).thenReturn("");
     }
 
     @Test

@@ -22,7 +22,7 @@ public class Crawler {
     //private Jsoup jsoup;
     //private JSONParser json;
     private List<String> links = new ArrayList<>();
-    private List<JsonObject> listJSONObject = new ArrayList<>();
+    private List<String> listJSONObject = new ArrayList<>();
     private Document doc;
     private int depth = 0;
     private Set<String> uniquePages = new HashSet<String>();
@@ -38,14 +38,13 @@ public class Crawler {
         scraper = new Scraper();
     }
 
-    public boolean crawl() throws IOException {
+    public boolean crawl(String url) throws IOException {
         //returns a document with the link that the scraper uses to retrieve the information of the link page
         if ((!links.contains(url) && (depth < MAX_DEPTH))) {
             addUniquePage(url);
             System.out.println(">> Depth: " + depth + " [" + url + "]");
             Document doc = getWholeContent();
             Elements linksOnPage = doc.select("a[href]");
-            System.out.println(linksOnPage.toString());
             depth++;
             for (Element link : linksOnPage) {
 
@@ -53,7 +52,7 @@ public class Crawler {
                 this.links.add(link.attr("href"));
                 if (link.attr("href").contains("details")) {
                     //must add crawl for this url
-                    listJSONObject.add(scraper.getContentAsString(doc));
+                    listJSONObject.add(scraper.getContentAsString(url +"/" + link.attr("href")));
                 }
             }
         }
@@ -120,7 +119,7 @@ public class Crawler {
         return this.links;
     }
 
-    public List<JsonObject> getListJSONObject() {
+    public List<String> getListJSONObject() {
         JsonArray jsonArray;
         return listJSONObject;
     }
