@@ -1,15 +1,14 @@
+import com.google.gson.JsonObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.apache.http.protocol.HTTP.USER_AGENT;
 import static sun.plugin.javascript.navig.JSType.URL;
 
 
@@ -22,6 +21,7 @@ public class Crawler {
     //private Jsoup jsoup;
     //private JSONParser json;
     private List<String> links;
+    private List<JsonObject> ListJSONObject;
     private Document doc;
     private int depth = 0;
     private Set<String> uniquePages = new HashSet<String>();
@@ -29,9 +29,14 @@ public class Crawler {
     private int finalDepth;;
 
     public Timer timer = new Timer();
+    public Pointer pointer;
+    public Scraper scraper;
+
 
     public Crawler(String url) {
         this.url = url;
+        pointer = new Pointer(this.url);
+        scraper = new Scraper();
     }
 
 
@@ -48,6 +53,7 @@ public class Crawler {
             }
             addToPageLinks(currentUrl);
             this.links.addAll(getLinks());
+
         }
         //getUniquePages();
         //getNumberOfPages();
@@ -73,6 +79,17 @@ public class Crawler {
         if ((!links.contains(URL) && (depth < MAX_DEPTH))) {
             System.out.println(">> Depth: " + depth + " [" + URL + "]");
 
+                Document doc = pointer.connect(url);
+                Elements linksOnPage = pointer.connect(url).select("a[href]");
+                //System.out.println("Found (" + linksOnPage.size() + ") links");
+                depth++;
+                for (Element link : linksOnPage) {
+                    this.links.add(link.absUrl("href"));
+                    scraper.searchContent(pointer.connect(url), doc.title());
+                }
+
+
+           /*
             try {
                 Connection connection = Jsoup.connect(newLink).userAgent(USER_AGENT);
                 Document htmlDocument = connection.get();
@@ -89,6 +106,8 @@ public class Crawler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            */
+
         }
         finalDepth = depth;
     }
@@ -127,4 +146,5 @@ public class Crawler {
     public List<String> getLinks() {
         return this.links;
     }
+
 }

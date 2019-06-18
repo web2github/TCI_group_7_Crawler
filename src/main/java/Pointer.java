@@ -2,6 +2,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
+
+import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 public class Pointer {
     private Crawler crawler;
@@ -9,6 +16,7 @@ public class Pointer {
     private String url;
     JsonArray jsonArray;
     JsonArray jsonInfoArray;
+    private Document doc;
 
 
     public Pointer(String url) {
@@ -19,7 +27,21 @@ public class Pointer {
         jsonInfoArray = new JsonArray();
     }
 
+    public Document connect(String url)
+    {
+        try {
+            Connection connection = Jsoup.connect(url).userAgent(USER_AGENT);
+            Document htmlDocument = connection.get();
+            this.doc = htmlDocument;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
+
     public JsonObject crawlWholeSite() {
+
 
         crawler.addToPageLinks(url + "/catalog.php");
         for (int i = 0; i < crawler.getLinks().size(); i++) {
@@ -37,22 +59,9 @@ public class Pointer {
 
     public JsonObject getCrawlerInfo() {
         Gson gson = new Gson();
-        String depth = gson.toJson(crawler.getDepth());
-        String unique = gson.toJson(crawler.getUniquePages());
-        String number = gson.toJson(crawler.getNumberOfPages());
-        String time =  gson.toJson(crawler.getTimeElapsed());
+        JsonObject jsonObject = new JsonObject();
 
-        JsonObject jsonDepth = new JsonParser().parse(String.valueOf(depth)).getAsJsonObject();
-        JsonObject jsonUnique = new JsonParser().parse(String.valueOf(unique)).getAsJsonObject();
-        JsonObject jsonNumber = new JsonParser().parse(String.valueOf(number)).getAsJsonObject();
-        JsonObject jsonTime = new JsonParser().parse(String.valueOf(time)).getAsJsonObject();
-
-        jsonInfoArray.add(jsonDepth);
-        jsonInfoArray.add(jsonUnique);
-        jsonInfoArray.add(jsonNumber);
-        jsonInfoArray.add(jsonTime);
-
-        JsonObject jsonObject = new JsonParser().parse(String.valueOf(jsonInfoArray)).getAsJsonObject();
+        //JsonObject jsonObject = new JsonParser().parse(String.valueOf(jsonInfoArray)).getAsJsonObject();
         return jsonObject;
     }
 }
