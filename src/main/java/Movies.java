@@ -5,6 +5,10 @@ public class Movies extends AbstractContent {
     private String writers;
     private String stars;
 
+    public Movies(String context) {
+
+    }
+
 
     //Method to return the Writers of the movie.
     public String getWriters(){
