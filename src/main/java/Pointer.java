@@ -30,12 +30,12 @@ public class Pointer {
         jsonInfoArray = new JsonArray();
     }
 
-    public JsonObject crawlWholeSite() {
+    public JsonObject crawlWholeSite() throws IOException {
         timer = new Timer();
         timer.start();
         while (true) {
+            crawler.crawl();
             if (crawler.getUniquePages() < crawler.getNumberOfPages()) {
-                crawler.crawl();
                 break;
             }
             timer.stop();

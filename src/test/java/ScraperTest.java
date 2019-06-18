@@ -35,7 +35,7 @@ public class ScraperTest {
     public void shouldReturnEmptyStringWhenCrawlResultsIsEmpty() {
         Document document = new Document("");
         Scraper mockedScraper = mock(Scraper.class);
-        when(mockedScraper.getContentAsString(document)).thenReturn("");
+        when(mockedScraper.getContentAsString(document)).thenReturn(jsonParser.parse("").getAsJsonObject());
     }
 
     @Test

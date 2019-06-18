@@ -3,6 +3,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
@@ -75,7 +77,7 @@ public class CrawlTest {
 
     /*Main functionality*/
     @Test
-    public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
+    public void depthResultsIsZeroWhenCrawlingThroughOnePage() throws IOException {
         //ARRANGE
         //ACT
         crawler.crawl();

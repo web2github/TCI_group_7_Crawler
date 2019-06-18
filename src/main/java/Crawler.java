@@ -1,5 +1,6 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,18 +38,23 @@ public class Crawler {
         scraper = new Scraper();
     }
 
-    public boolean crawl() {
+    public boolean crawl() throws IOException {
         //returns a document with the link that the scraper uses to retrieve the information of the link page
         if ((!links.contains(url) && (depth < MAX_DEPTH))) {
             addUniquePage(url);
             System.out.println(">> Depth: " + depth + " [" + url + "]");
             Document doc = getWholeContent();
-            Elements linksOnPage = getWholeContent().select("a[href]");
+            Elements linksOnPage = doc.select("a[href]");
+            System.out.println(linksOnPage.toString());
             depth++;
             for (Element link : linksOnPage) {
-                this.links.add(link.absUrl("href"));
-                listJSONObject.add(
-                        scraper.searchContent(doc, doc.title()));
+
+                System.out.println(link.attr("href"));
+                this.links.add(link.attr("href"));
+                if (link.attr("href").contains("details")) {
+                    //must add crawl for this url
+                    listJSONObject.add(scraper.getContentAsString(doc));
+                }
             }
         }
         finalDepth = depth;

@@ -12,14 +12,14 @@ public class Scraper {
         Elements rows = table.select("tr");
         for (int i = 0; i < rows.size(); i++) {
             if (keyword.equals(rows.select("td").get(i)) || keyword.equals(doc.title())) {
-                jsonObject = new JsonParser().parse(getContentAsString(doc)).getAsJsonObject();
+                jsonObject = getContentAsString(doc);
                 break;
             }
         }
         return jsonObject;
     }
 
-    public String getContentAsString(Document doc) {
+    public JsonObject getContentAsString(Document doc) {
 
         // With the document fetched, we use JSoup's title() method to fetch the title
         System.out.printf("Title: %s\n", doc.title());
@@ -37,7 +37,7 @@ public class Scraper {
             stringBuilder.append(th.text() + ":" + td.text());
         }
         stringBuilder.append("}");
-        return stringBuilder.toString();
+        return new JsonParser().parse(stringBuilder.toString()).getAsJsonObject();
     }
 }
 
