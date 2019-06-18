@@ -3,8 +3,19 @@
 
 \.idea/uiDesigner\.xml
 
-\.idea/vcs\.xml
-
-\.gradle/4\.10\.3/fileHashes/
-
 \.idea/
+\.idea/vcs\.xml
+\.gradle/4\.10\.3/fileContent/
+
+
+\.idea/libraries/
+
+\.idea/modules/
+
+\.gradle/buildOutputCleanup/
+
+\.gradle/4\.10\.3/taskHistory/
+
+\.gradle/4\.10\.3/javaCompile/
+
+*.bin

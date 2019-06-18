@@ -1,63 +1,103 @@
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 //CONTENTS OF CRAWLER CLASS, CHANGE NAME
 public class CrawlTest {
+    private Crawler crawler;
+    private static final String VALID_URL = "https://validurl.com";
+    private static final String VALID_PAGE_CONTENT = "Valid content";
+    private static final double VALID_TIME_ELAPSED = 12.12;
+
+    @Before
+    public void setUp() {
+
+        crawler = new Crawler(VALID_URL);
+    }
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void contentOfTheWebPageIsNotNullandNotEmpty() {
-        // public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid()
+    public void illegalArgumentExceptionThrownWhenURLIsUnableToConnect() {
+        //ARRANGE
+        crawler = new Crawler("http://localhost:84416514");
+        //ACT
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("The URL link is unable to connect");
+        crawler.isConnect();
+        //ASSERT
     }
 
     @Test
-    public void getTimeElapseInDouble() {
-
+    public void TimeElapsedIsInDouble() {
+        //ARRANGE
+        //ACT
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("");
+        //ASSERT
     }
 
-    /*Total number of pages while crawling
-     * Default number of webpages returned is not null
-     * When URL is invalid throw exception
-     * Number of unique webpages is shown
-     */
+    @Test
+    public void TimeElapsedIsNotNegative() {
+        //ARRANGE
+        //ACT
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Time elapsed must be positive");
+        //ASSERT
+    }
+
     /* Main functionality*/
     @Test
     public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() {
-
+        //ARRANGE
+        //ACT
+        //ASSERT
+        assertEquals("site has more than one page", 1, crawler.getNumberOfPages());
     }
 
     @Test
     public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() {
-
+        //ARRANGE
+        //ACT
+        //ASSERT
+        assertThat(crawler.getNumberOfPages(), greaterThan(1));
     }
 
     /* Main functionality*/
     @Test
     public void keepTrackOfNumberOfPageVisitedWhenCrawlingTheEntireWebsite() {
-    }
-
-    @Test
-    public void whenCrawlingOnePageTheNumberOfPagesVisitedIsOne() {
+        //ARRANGE
+        int minPage = 0;
+        int maxPage = 100;
+        //ACT
+        //ASSERT
+        assertTrue(minPage <= crawler.getNumberOfPages() && crawler.getNumberOfPages() <= maxPage);
     }
 
     /*Main functionality*/
     @Test
-    public void timeElapsedAfterCrawlingIsLessThanOne() {
-    }
-
-    @Test
     public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
+        //ARRANGE
+        //ACT
+        crawler.crawl(VALID_URL);
+        //ASSERT
+        assertEquals("site has more than one page", 1, crawler.getNumberOfPages());
+        assertEquals(0, crawler.getDepth());
     }
 
     @Test
-    public void illegalArgumentExceptionThrownWhenURLIsInvalidOrNoneExisting() {
+    public void timeElapsedAfterCrawlingIsNotNull() {
+        //ARRANGE
+        //ACT
+        crawler.crawl(VALID_URL);
+        //ASSERT
+        assertThat(crawler.getTimeElapsed(), is(notNullValue()));
     }
-
-    @Test
-    public void timeElapsedAfterTheLatestCrawlIsNotNullAndNotEmpty() {
-
-    }
-
-
 }

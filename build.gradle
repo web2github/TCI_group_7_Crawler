@@ -15,9 +15,9 @@ dependencies {
     compile group: 'pl.pragmatists', name: 'JUnitParams', version: '1.0.4'
     compile("org.hamcrest:hamcrest-library:2.1")
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
-    // jsoup HTML parser library @ https://jsoup.org/
     compile 'org.jsoup:jsoup:1.12.1'
-
+    compile 'fr.vsct.tock:bot-toolkit:19.3.1'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    // jsoup HTML parser library @ https://jsoup.org/
 }
