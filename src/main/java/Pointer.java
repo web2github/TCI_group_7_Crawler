@@ -13,8 +13,10 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 public class Pointer {
     private Crawler crawler;
     private Scraper scraper;
+    //returns the time it has spent crawling
+    private double time;
+    private JsonObject jsonObject = new JsonParser().parse("").getAsJsonObject();
     private String url;
-    JsonArray jsonArray;
     JsonArray jsonInfoArray;
     private Document doc;
 
@@ -22,46 +24,41 @@ public class Pointer {
     public Pointer(String url) {
         this.url = url;
         crawler = new Crawler(url);
-        scraper = new Scraper();
-        jsonArray = new JsonArray();
         jsonInfoArray = new JsonArray();
     }
 
-    public Document connect(String url)
-    {
-        try {
-            Connection connection = Jsoup.connect(url).userAgent(USER_AGENT);
-            Document htmlDocument = connection.get();
-            this.doc = htmlDocument;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return doc;
-    }
-
     public JsonObject crawlWholeSite() {
-
-
-        crawler.addToPageLinks(url + "/catalog.php");
-        for (int i = 0; i < crawler.getLinks().size(); i++) {
-//            scraper.setContent((url + "/" + crawler.getLinks().get(i)));
-//            scraper.getContent();
-//            jsonArray.add(scraper.getContent());
+        Timer timer = new Timer();
+        timer.start();
+        while (true) {
+            if (crawler.getUniquePages() < crawler.getNumberOfPages()) {
+                crawler.crawl();
+                break;
+            }
+            timer.stop();
+            time = timer.timeElapsed();
+            jsonObject = new JsonParser().parse(crawler.getListJSONObject().toString()).getAsJsonObject();
         }
-        JsonObject jsonObject = new JsonParser().parse(String.valueOf(jsonArray)).getAsJsonObject();
         return jsonObject;
     }
 
     public JsonObject crawlForAContent(String typeOfContent, String keyword) {
-        return new JsonObject();
+        if (crawler.getListJSONObject().size() != 0) {
+
+            return crawler.getListJSONObject().get(0);
+        } else {
+            return jsonObject;
+        }
+
     }
 
     public JsonObject getCrawlerInfo() {
-        Gson gson = new Gson();
-        JsonObject jsonObject = new JsonObject();
-
-        //JsonObject jsonObject = new JsonParser().parse(String.valueOf(jsonInfoArray)).getAsJsonObject();
+        jsonObject = new JsonParser().parse("{" +
+                "time_elapse : " + time
+                + "unique_page : " + crawler.getUniquePages()
+                + "total_page : " + crawler.getNumberOfPages()
+                + "}"
+        ).getAsJsonObject();
         return jsonObject;
     }
 }

@@ -13,7 +13,7 @@ public class PointerTest {
 
     @Test
     public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid() {
-        // ARRANGE
+        //ARRANGE
         //ACT
         //ASSERT
 //        assertEquals(VALID_PAGE_CONTENT, crawler.addToPageLinks(VALID_URL));

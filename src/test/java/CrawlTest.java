@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 //CONTENTS OF CRAWLER CLASS, CHANGE NAME
 public class CrawlTest {
     private Crawler crawler;
-    private static final String VALID_URL = "https://validurl.com";
+    private static final String VALID_URL = "http://localhost:8082/sample_site_to_crawl/";
     private static final String VALID_PAGE_CONTENT = "Valid content";
     private static final double VALID_TIME_ELAPSED = 12.12;
 
@@ -39,9 +39,8 @@ public class CrawlTest {
     public void TimeElapsedIsInDouble() {
         //ARRANGE
         //ACT
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("");
         //ASSERT
+        assertEquals(Double.class, crawler.getTimeElapsed());
     }
 
     @Test

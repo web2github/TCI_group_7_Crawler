@@ -29,38 +29,16 @@ public class Scraper {
         Elements rows = table.select("tr");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{");
-        for (int i = 0; i < rows.size(); i++) { //first row is the col names so skip it.
+        for (int i = 0; i < rows.size(); i++) {
             Element th = rows.select("th").get(i);
             Element td = rows.select("td").get(i);
             System.out.println(th.text()); // print th value
             System.out.println(td.text()); // print td value
             stringBuilder.append(th.text() + ":" + td.text());
-
         }
         stringBuilder.append("}");
         return stringBuilder.toString();
     }
-//                if (th.is("Category")) {
-//                Element col = rows.select("td").get(i);
-//                //Books books = new Books("").setCategory(col.toString());
-//            }
-//            if (th.is("Genre")) {
-//                Element col = rows.select("td").get(i);
-//            }
-//            if (th.is("Format")) {
-//                Element col = rows.select("td").get(i);
-//            }
-//
-//            if (th.is("Authors")) {
-//                Element col = rows.select("td").get(i);
-//            }
-//
-//            if (th.is("Publisher")) {
-//                Element col = rows.select("td").get(i);
-//            }
-//            if (th.is("ISBN")) {
-//                Element col = rows.select("td").get(i);
-//            }
 }
 
 
