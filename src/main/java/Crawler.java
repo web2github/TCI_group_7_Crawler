@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,8 +20,8 @@ public class Crawler {
     //public static void main (String[] args){}
     //private Jsoup jsoup;
     //private JSONParser json;
-    private List<String> links;
-    private List<JsonObject> ListJSONObject;
+    private List<String> links = new ArrayList<>();
+    private List<JsonObject> listJSONObject = new ArrayList<>();
     private Document doc;
     private int depth = 0;
     private Set<String> uniquePages = new HashSet<String>();
@@ -46,7 +47,8 @@ public class Crawler {
             depth++;
             for (Element link : linksOnPage) {
                 this.links.add(link.absUrl("href"));
-                scraper.searchContent(doc, doc.title());
+                listJSONObject.add(
+                        scraper.searchContent(doc, doc.title()));
             }
         }
         finalDepth = depth;
@@ -114,6 +116,6 @@ public class Crawler {
 
     public List<JsonObject> getListJSONObject() {
         JsonArray jsonArray;
-        return ListJSONObject;
+        return listJSONObject;
     }
 }

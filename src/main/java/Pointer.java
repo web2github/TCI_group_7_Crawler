@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.Test;
 
 import java.io.IOException;
 
@@ -14,8 +15,10 @@ public class Pointer {
     private Crawler crawler;
     private Scraper scraper;
     //returns the time it has spent crawling
+
+    private Timer timer;
     private double time;
-    private JsonObject jsonObject = new JsonParser().parse("").getAsJsonObject();
+    private JsonObject jsonObject = new JsonParser().parse("{}").getAsJsonObject();
     private String url;
     JsonArray jsonInfoArray;
     private Document doc;
@@ -28,7 +31,7 @@ public class Pointer {
     }
 
     public JsonObject crawlWholeSite() {
-        Timer timer = new Timer();
+        timer = new Timer();
         timer.start();
         while (true) {
             if (crawler.getUniquePages() < crawler.getNumberOfPages()) {
@@ -37,7 +40,7 @@ public class Pointer {
             }
             timer.stop();
             time = timer.timeElapsed();
-            jsonObject = new JsonParser().parse(crawler.getListJSONObject().toString()).getAsJsonObject();
+            jsonObject = new JsonParser().parse("{" + crawler.getListJSONObject().toString() + "}").getAsJsonObject();
         }
         return jsonObject;
     }
@@ -49,7 +52,6 @@ public class Pointer {
         } else {
             return jsonObject;
         }
-
     }
 
     public JsonObject getCrawlerInfo() {
@@ -60,6 +62,18 @@ public class Pointer {
                 + "}"
         ).getAsJsonObject();
         return jsonObject;
+    }
+
+    @Test
+    public void TimeElapsedIsInDouble() {
+        //ARRANGE
+        //ACT
+        //ASSERT
+//        assertEquals(Double.class, crawler.getTimeElapsed());
+    }
+
+    public Double getTimeElapsed() {
+        return time;
     }
 }
 

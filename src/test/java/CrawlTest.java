@@ -35,13 +35,6 @@ public class CrawlTest {
         //ASSERT
     }
 
-    @Test
-    public void TimeElapsedIsInDouble() {
-        //ARRANGE
-        //ACT
-        //ASSERT
-        assertEquals(Double.class, crawler.getTimeElapsed());
-    }
 
     @Test
     public void TimeElapsedIsNotNegative() {
@@ -85,18 +78,11 @@ public class CrawlTest {
     public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
         //ARRANGE
         //ACT
-        crawler.crawl(VALID_URL);
+        crawler.crawl();
         //ASSERT
         assertEquals("site has more than one page", 1, crawler.getNumberOfPages());
         assertEquals(0, crawler.getDepth());
     }
 
-    @Test
-    public void timeElapsedAfterCrawlingIsNotNull() {
-        //ARRANGE
-        //ACT
-        crawler.crawl(VALID_URL);
-        //ASSERT
-        assertThat(crawler.getTimeElapsed(), is(notNullValue()));
-    }
+
 }
