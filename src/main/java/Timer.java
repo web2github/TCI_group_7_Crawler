@@ -1,4 +1,5 @@
 public class Timer {
+    //class for the time elapsing
     private double startTime;
     private double endTime;
     private double timeElapsed;

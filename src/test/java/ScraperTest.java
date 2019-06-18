@@ -49,12 +49,20 @@ public class ScraperTest {
 
     @Test
     public void assertThatMovieContentFromScraperIsEqualToMovieContentWhenCreate() {
-
+        // arrange
+        JsonObject movie = ContentFactory.createContent(TYPE_OF_CONTENT, CONTEXT_BOOK);
+        // act
+        // assert
+        assertEquals("", movie.getAsString());
     }
 
     @Test
     public void assertThatMusicContentFromScraperIsEqualToMusicContentWhenCreated() {
-
+        // arrange
+        JsonObject music = ContentFactory.createContent(TYPE_OF_CONTENT, CONTEXT_BOOK);
+        // act
+        // assert
+        assertEquals("", music.getAsString());
     }
 }
 

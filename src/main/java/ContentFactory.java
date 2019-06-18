@@ -31,9 +31,28 @@ public class ContentFactory {
             return jsonObject;
         }
         if (typeOfContent.equals(ContentEnum.MOVIE)) {
+            Movies movies = new Movies(context);
+            jsonObject = parser.parse(movies.getTitle()
+                    //Genre, Format, Year, Director, Writers, Stars
+                    + ContentEnum.BOOK
+                    + movies.getGenre()
+                    + movies.getFormat()
+                    + movies.getYear()
+                    + movies.getDirector()
+                    + movies.getWriters()
+                    + movies.getStars()
+            ).getAsJsonObject();
             return jsonObject;
         }
         if (typeOfContent.equals(ContentEnum.MUSIC)) {
+            Music music = new Music(context);
+            jsonObject = parser.parse(music.getTitle()
+                    + ContentEnum.BOOK
+                    + music.getGenre()
+                    + music.getFormat()
+                    + music.getYear()
+                    + music.getArtist()
+            ).getAsJsonObject();
             return jsonObject;
         } else {
             jsonObject = parser.parse("").getAsJsonObject();

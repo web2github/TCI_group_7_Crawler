@@ -1,4 +1,3 @@
-import jdk.nashorn.internal.parser.JSONParser;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,8 +19,8 @@ public class Crawler {
 
     private String url;
     private double time;
-    private Jsoup jsoup;
-    private JSONParser json;
+    //private Jsoup jsoup;
+    //private JSONParser json;
     private List<String> links;
     private Document doc;
     private int depth = 0;
@@ -50,11 +49,11 @@ public class Crawler {
             addToPageLinks(currentUrl);
             this.links.addAll(getLinks());
         }
-        getUniquePages();
-        getNumberOfPages();
-        getDepth();
+        //getUniquePages();
+        //getNumberOfPages();
+        //getDepth();
         timer.stop();
-        getTimeElapsed();
+        //getTimeElapsed();
 
     }
 
@@ -100,8 +99,7 @@ public class Crawler {
         return time;
     }
 
-
-    private int getUniquePages() {
+    public int getUniquePages() {
         return uniquePages.size();
     }
 
@@ -114,7 +112,6 @@ public class Crawler {
     {
         return finalDepth;
     }
-
 
     private String nextUrl()
     {
