@@ -32,7 +32,7 @@ public class CrawlTest {
         crawler = new Crawler("http://localhost:84416514");
         //ACT
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("The URL link is unable to connect");
+        thrown.expectMessage("Invalid URL/Connection");
         crawler.isConnect();
         //ASSERT
     }
@@ -63,7 +63,6 @@ public class CrawlTest {
         //ACT
         //ASSERT
         crawler.crawl(VALID_URL);
-
         assertThat(crawler.getNumberOfPages(), greaterThan(1));
     }
 

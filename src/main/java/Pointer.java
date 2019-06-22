@@ -30,47 +30,53 @@ public class Pointer {
         jsonInfoArray = new JsonArray();
     }
 
-    public JsonObject crawlWholeSite() throws IOException {
-//        url = url.concat("catalog.php");
+    public JsonObject crawlWholeSite() {
         timer = new Timer();
         timer.start();
-        while (true) {
-            crawler.crawl(url);
-            if (crawler.getUniquePages() < crawler.getNumberOfPages()) {
-                break;
-            }
-            timer.stop();
-            time = timer.timeElapsed();
-            jsonObject = new JsonParser().parse("{" + crawler.getListJSONObject().toString() + "}").getAsJsonObject();
-        }
+        crawler.crawl(url);
+        timer.stop();
+        time = timer.timeElapsed();
         return jsonObject;
     }
 
-    public JsonObject crawlForAContent(String typeOfContent, String keyword) {
-        if (crawler.getListJSONObject().size() != 0) {
-
-           return new JsonParser().parse(crawler.getListJSONObject().get(0)).getAsJsonObject();
-        } else {
-            return jsonObject;
+    public String crawlForAContent(final String typeOfContent, final String keyword) throws IOException {
+        crawlWholeSite();
+        if (typeOfContent.contains("books")) {
+            for (String str :
+                    crawler.getListOfBooks()) {
+                if (str.contains(keyword)) {
+                    return str;
+                }
+            }
         }
+        if (typeOfContent.contains("movies")) {
+            for (String str :
+                    crawler.getListOfMovies()) {
+                if (str.contains(keyword)) {
+                    return str;
+                }
+            }
+        }
+        if (typeOfContent.contains("music")) {
+            for (String str :
+                    crawler.getListOfMusic()) {
+                if (str.contains(keyword)) {
+                    return str;
+                }
+            }
+        }
+        return "";
     }
 
     public JsonObject getCrawlerInfo() {
         jsonObject = new JsonParser().parse("{" +
                 "time_elapse : " + time
-                + "unique_page : " + crawler.getUniquePages()
-                + "total_page : " + crawler.getNumberOfPages()
+                + ",unique_page : " + crawler.getUniquePages()
+                + ",total_page : " + crawler.getNumberOfPages()
                 + "}"
         ).getAsJsonObject();
+        System.out.println(jsonObject.toString());
         return jsonObject;
-    }
-
-    @Test
-    public void TimeElapsedIsInDouble() {
-        //ARRANGE
-        //ACT
-        //ASSERT
-//        assertEquals(Double.class, crawler.getTimeElapsed());
     }
 
     public Double getTimeElapsed() {

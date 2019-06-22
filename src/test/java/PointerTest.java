@@ -17,19 +17,30 @@ public class PointerTest {
     @Before
     public void setUp() {
         pointer = new Pointer("http://localhost:8082/sample_site_to_crawl/");
-//        crawler = new Crawler("http://localhost:8082/sample_site_to_crawl/");
         scraper = new Scraper();
+    }
+
+    @Test
+    public void showInfoOfCrawler() {
+        pointer.crawlWholeSite();
+        pointer.getCrawlerInfo();
+    }
+
+    @Test
+    public void resultFoundAfterContentSearched() throws IOException {
+        assertNotNull(
+                pointer.crawlForAContent("books", "The Clean Coder: A Code of Conduct for Professional Programmers")
+        );
+        System.out.println(pointer.crawlForAContent("books", "The Clean Coder: A Code of Conduct for Professional Programmers"));
     }
 
     @Test
     public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid() throws IOException {
         //ARRANGE
         //ACT
+        //ASSERT
         assertNotNull(
                 pointer.crawlWholeSite());
-
-        //ASSERT
-//        assertEquals(VALID_PAGE_CONTENT, crawler.addToPageLinks(VALID_URL));
     }
 
     @Test

@@ -22,9 +22,8 @@ public class ServiceForCrawler {
     @Path("/query")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSpecificContent(
-            @QueryParam("type") String type,
             @QueryParam("keyword") String keyword) {
-        pointer.crawlForAContent(type, keyword);
+        pointer.crawlForAContent(keyword);
         return Response
                 .status(200)
                 .entity("").build();

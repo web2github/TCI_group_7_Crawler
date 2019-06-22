@@ -6,6 +6,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,54 +17,108 @@ import java.util.Set;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 
-
 public class Crawler {
-
-    //public static void main (String[] args){}
-    //private Jsoup jsoup;
-    //private JSONParser json;
     private List<String> links = new ArrayList<>();
-    private List<String> listJSONObject = new ArrayList<>();
+
+    private final List<String> listOfMovies = new ArrayList<>();
+    private final List<String> listOfMusic = new ArrayList<>();
+    private final List<String> listOfBooks = new ArrayList<>();
+    private final List<String> listOfAllContents = new ArrayList<>();
     private Document doc;
     private int depth = 0;
     private Set<String> uniquePages = new HashSet<String>();
     private static final int MAX_DEPTH = 50;
     private int finalDepth;
-
-    public Scraper scraper;
+    private Scraper scraper;
     private String url;
-
 
     public Crawler(String url) {
         this.url = url;
         scraper = new Scraper();
     }
 
-    public boolean crawl(String url) throws IOException {
+    public void crawl(String url) {
         //returns a document with the link that the scraper uses to retrieve the information of the link page
         if ((!links.contains(url) && (depth < MAX_DEPTH))) {
             addUniquePage(url);
-            System.out.println(">> Depth: " + depth + " [" + url + "]");
-            Document doc = getWholeContent();
+            Document doc = getWholeContent(url);
             Elements linksOnPage = doc.select("a[href]");
-            depth++;
+            depth = 1;
             for (Element link : linksOnPage) {
+                this.links.add(url + "/" + link.attr("href"));
+                addUniquePage(url+ "/" + link.attr("href"));
+                depth = 2;
+                if (link.attr("href").contains("books")) {
+                    doc = getWholeContent(url + link.attr("href"));
+                    Elements linksForItems = doc.select("ul.items li a");
+                    addBookContent(linksForItems);
+                }
+                if (link.attr("href").contains("movies")) {
 
-                System.out.println(link.attr("href"));
-                this.links.add(link.attr("href"));
-                if (link.attr("href").contains("details")) {
-                    //must add crawl for this url
-                    listJSONObject.add(scraper.getContentAsString(url +"/" + link.attr("href")));
+                    doc = getWholeContent(url + link.attr("href"));
+                    Elements linksForItems = doc.select("ul.items li a");
+                    addMoviesContent(linksForItems);
+                }
+
+                if (link.attr("href").contains("music")) {
+
+                    doc = getWholeContent(url + link.attr("href"));
+                    Elements linksForItems = doc.select("ul.items li a");
+                    addMusicContent(linksForItems);
                 }
             }
+
         }
         finalDepth = depth;
-        return true;
+    }
+
+    private void addMusicContent(Elements itemsElement) {
+
+        for (Element item : itemsElement
+                ) {
+            String content = scraper.getContentAsString(url + "/" + item.attr("href"));
+            listOfMusic.add(content);
+            listOfAllContents.add(content);
+        }
+    }
+
+    public List<String> getListOfMusic() {
+        return listOfMusic;
+    }
+
+    private void addMoviesContent(Elements itemsElement) {
+
+        for (Element item : itemsElement
+                ) {
+
+            String content = scraper.getContentAsString(url + "/" + item.attr("href"));
+            listOfMovies.add(content);
+            listOfAllContents.add(content);
+        }
+    }
+
+    public List<String> getListOfMovies() {
+        return listOfMovies;
+    }
+
+
+    private void addBookContent(Elements itemsElement) {
+
+        for (Element item : itemsElement
+                ) {
+
+            String content = scraper.getContentAsString(url + "/" + item.attr("href"));
+            listOfBooks.add(content);
+            listOfAllContents.add(content);
+        }
+    }
+
+    public List<String> getListOfBooks() {
+        return listOfBooks;
     }
 
     private void addUniquePage(String url) {
-        //starts the crawling
-        for (String uniquePage : uniquePages
+        for (String uniquePage : links
                 ) {
             if (!uniquePage.equals(url)) {
                 this.uniquePages.add(url);
@@ -76,11 +132,11 @@ public class Crawler {
         if (response.statusCode() == 200) {
             return true;
         } else {
-            throw new IllegalArgumentException("The URL link is unable to connect");
+            throw new IllegalArgumentException("Invalid URL/Connection");
         }
     }
 
-    public Document getWholeContent() {
+    public Document getWholeContent(String url) {
         try {
             Connection connection = Jsoup.connect(url).userAgent(USER_AGENT);
             Document htmlDocument = connection.get();
@@ -91,8 +147,6 @@ public class Crawler {
         }
         return doc;
     }
-
-
     public int getUniquePages() {
         return uniquePages.size();
     }
@@ -119,8 +173,8 @@ public class Crawler {
         return this.links;
     }
 
-    public List<String> getListJSONObject() {
-        JsonArray jsonArray;
-        return listJSONObject;
-    }
+//    public List<String> getListJSONObject() {
+//        JsonArray jsonArray;
+//        return listJSONObject;
+//    }
 }
