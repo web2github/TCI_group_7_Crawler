@@ -3,15 +3,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.IOException;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-//CONTENTS OF CRAWLER CLASS, CHANGE NAME
-public class CrawlTest {
+public class CrawlerTest {
     private Crawler crawler;
     private static final String VALID_URL = "http://localhost:8082/sample_site_to_crawl/";
     private static final String VALID_PAGE_CONTENT = "Valid content";
@@ -37,7 +36,6 @@ public class CrawlTest {
         //ASSERT
     }
 
-
     @Test
     public void TimeElapsedIsNotNegative() {
         //ARRANGE
@@ -47,22 +45,30 @@ public class CrawlTest {
         //ASSERT
     }
 
-    /* Main functionality*/
     @Test
-    public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() throws IOException {
+    public void contentOfTheWebPageIsNotNullAndNotEmptyWhenTheUrlIsValid() {
         //ARRANGE
         //ACT
         //ASSERT
-        crawler.crawl(VALID_URL);
+        crawler.crawl(VALID_URL, "");
+        assertNotNull(crawler.getContents());
+    }
+
+    @Test
+    public void whenCrawlingOnePageTheNumberOfUniqueWebpagesIsOne() {
+        //ARRANGE
+        //ACT
+        //ASSERT
+        crawler.crawl(VALID_URL, "");
         assertEquals("site has more than one page", 1, crawler.getUniquePages());
     }
 
     @Test
-    public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() throws IOException {
+    public void whenCrawlingMultiplePagesTheNumberOfPagesIsNotNullOrOne() {
         //ARRANGE
         //ACT
         //ASSERT
-        crawler.crawl(VALID_URL);
+        crawler.crawl(VALID_URL, "");
         assertThat(crawler.getNumberOfPages(), greaterThan(1));
     }
 
@@ -70,8 +76,8 @@ public class CrawlTest {
     @Test
     public void keepTrackOfNumberOfPageVisitedWhenCrawlingTheEntireWebsite() {
         //ARRANGE
-        int minPage = 0;
-        int maxPage = 100;
+        final int minPage = 0;
+        final int maxPage = 5;
         //ACT
         //ASSERT
         assertTrue(minPage <= crawler.getNumberOfPages() && crawler.getNumberOfPages() <= maxPage);
@@ -79,10 +85,10 @@ public class CrawlTest {
 
     /*Main functionality*/
     @Test
-    public void depthResultsIsZeroWhenCrawlingThroughOnePage() throws IOException {
+    public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
         //ARRANGE
         //ACT
-        crawler.crawl("");
+        crawler.crawl("", "");
         //ASSERT
         assertEquals("site has more than one page", 1, crawler.getNumberOfPages());
         assertEquals(0, crawler.getDepth());

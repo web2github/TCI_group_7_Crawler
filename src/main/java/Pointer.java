@@ -14,9 +14,8 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 public class Pointer {
     private Crawler crawler;
     private Scraper scraper;
-    //returns the time it has spent crawling
 
-    private Timer timer;
+    private Timer timer = new Timer();
     private double time;
     private JsonObject jsonObject = new JsonParser().parse("{}").getAsJsonObject();
     private String url;
@@ -31,41 +30,21 @@ public class Pointer {
     }
 
     public JsonObject crawlWholeSite() {
-        timer = new Timer();
         timer.start();
-        crawler.crawl(url);
+        crawler.crawl(url, "");
         timer.stop();
         time = timer.timeElapsed();
         return jsonObject;
     }
 
-    public String crawlForAContent(final String typeOfContent, final String keyword) throws IOException {
-        crawlWholeSite();
-        if (typeOfContent.contains("books")) {
-            for (String str :
-                    crawler.getListOfBooks()) {
-                if (str.contains(keyword)) {
-                    return str;
-                }
-            }
-        }
-        if (typeOfContent.contains("movies")) {
-            for (String str :
-                    crawler.getListOfMovies()) {
-                if (str.contains(keyword)) {
-                    return str;
-                }
-            }
-        }
-        if (typeOfContent.contains("music")) {
-            for (String str :
-                    crawler.getListOfMusic()) {
-                if (str.contains(keyword)) {
-                    return str;
-                }
-            }
-        }
-        return "";
+    public String crawlForAContent(final String keyword) {
+
+        timer.start();
+        crawler.crawl(url, keyword);
+        timer.stop();
+        time = timer.timeElapsed();
+        return crawler.crawl(url, keyword);
+
     }
 
     public JsonObject getCrawlerInfo() {

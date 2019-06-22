@@ -33,7 +33,6 @@ public class ScraperTest {
         CONTEXT_BOOK = "The Clean Coder: A Code of Conduct for Professional Programmers";
         URL_FOR_TITLE = "http://localhost:8082/sample_site_to_crawl/details.php?id=302";
         CONTEXT_TITLE = "Elvis Forever";
-
     }
 
     //CONTENTS OF SCRAPER CLASS, CHANGE NAME

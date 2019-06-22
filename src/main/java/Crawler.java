@@ -1,13 +1,8 @@
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,14 +14,10 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 public class Crawler {
     private List<String> links = new ArrayList<>();
-
-    private final List<String> listOfMovies = new ArrayList<>();
-    private final List<String> listOfMusic = new ArrayList<>();
-    private final List<String> listOfBooks = new ArrayList<>();
+    private Set uniquePages = new HashSet<String>();
     private final List<String> listOfAllContents = new ArrayList<>();
     private Document doc;
     private int depth = 0;
-    private Set<String> uniquePages = new HashSet<String>();
     private static final int MAX_DEPTH = 50;
     private int finalDepth;
     private Scraper scraper;
@@ -37,106 +28,66 @@ public class Crawler {
         scraper = new Scraper();
     }
 
-    public void crawl(String url) {
-        //returns a document with the link that the scraper uses to retrieve the information of the link page
-        if ((!links.contains(url) && (depth < MAX_DEPTH))) {
-            addUniquePage(url);
-            Document doc = getWholeContent(url);
-            Elements linksOnPage = doc.select("a[href]");
+    public String crawl(final String url, final String keyword) {
+        links = new ArrayList<>();
+        uniquePages = new HashSet<String>();
+        Connection connection = Jsoup.connect(url);
+        Document doc = null;
+        try {
+            doc = connection.get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return navigate(doc, keyword);
+    }
+
+    private String navigate(Document document, final String search) {
+        String results = "";
+        Elements navigationBar = document.select("ul.nav li a");
+        for (Element nav :
+                navigationBar) {
             depth = 1;
-            for (Element link : linksOnPage) {
-                this.links.add(url + "/" + link.attr("href"));
-                addUniquePage(url+ "/" + link.attr("href"));
+            addLinkPage(url + nav.attr("href"));
+            document = getWholeContent(url + nav.attr("href"));
+            Elements items = document.select("ul.items li a");
+            if (search.equals("")) {
+                addContent(items);
                 depth = 2;
-                if (link.attr("href").contains("books")) {
-                    doc = getWholeContent(url + link.attr("href"));
-                    Elements linksForItems = doc.select("ul.items li a");
-                    addBookContent(linksForItems);
-                }
-                if (link.attr("href").contains("movies")) {
+            } else {
+                depth = 2;
+                results = lookIntoItems(items, search);
+                if (!results.equals("")) {
 
-                    doc = getWholeContent(url + link.attr("href"));
-                    Elements linksForItems = doc.select("ul.items li a");
-                    addMoviesContent(linksForItems);
-                }
-
-                if (link.attr("href").contains("music")) {
-
-                    doc = getWholeContent(url + link.attr("href"));
-                    Elements linksForItems = doc.select("ul.items li a");
-                    addMusicContent(linksForItems);
+                    break;
                 }
             }
-
+            addLinkPage(url + nav.attr("href"));
         }
-        finalDepth = depth;
+        return results;
     }
 
-    private void addMusicContent(Elements itemsElement) {
-
-        for (Element item : itemsElement
-                ) {
-            String content = scraper.getContentAsString(url + "/" + item.attr("href"));
-            listOfMusic.add(content);
-            listOfAllContents.add(content);
-        }
-    }
-
-    public List<String> getListOfMusic() {
-        return listOfMusic;
-    }
-
-    private void addMoviesContent(Elements itemsElement) {
-
-        for (Element item : itemsElement
-                ) {
-
-            String content = scraper.getContentAsString(url + "/" + item.attr("href"));
-            listOfMovies.add(content);
-            listOfAllContents.add(content);
-        }
-    }
-
-    public List<String> getListOfMovies() {
-        return listOfMovies;
-    }
-
-
-    private void addBookContent(Elements itemsElement) {
-
-        for (Element item : itemsElement
-                ) {
-
-            String content = scraper.getContentAsString(url + "/" + item.attr("href"));
-            listOfBooks.add(content);
-            listOfAllContents.add(content);
-        }
-    }
-
-    public List<String> getListOfBooks() {
-        return listOfBooks;
-    }
-
-    private void addUniquePage(String url) {
-        for (String uniquePage : links
-                ) {
-            if (!uniquePage.equals(url)) {
-                this.uniquePages.add(url);
+    private String lookIntoItems(final Elements items, final String keyword) {
+        String detailLink;
+        String results = "";
+        depth = 2;
+        for (Element itemlink : items) {
+            detailLink = url + "/" + itemlink.attr("href");
+            addLinkPage(detailLink);
+            if (scraper.searchContent(detailLink, keyword)) {
+                results = scraper.getContentAsString(detailLink);
+                break;
             }
         }
-
+        return results;
     }
 
-    public boolean isConnect() {
-        Connection.Response response = Jsoup.connect(url).response();
-        if (response.statusCode() == 200) {
-            return true;
-        } else {
-            throw new IllegalArgumentException("Invalid URL/Connection");
-        }
+    private void addLinkPage(final String url) {
+        System.out.println(url);
+        this.links.add(url);
+        uniquePages.addAll(links);
     }
 
-    public Document getWholeContent(String url) {
+    private Document getWholeContent(final String url) {
         try {
             Connection connection = Jsoup.connect(url).userAgent(USER_AGENT);
             Document htmlDocument = connection.get();
@@ -147,6 +98,23 @@ public class Crawler {
         }
         return doc;
     }
+
+    private void addContent(final Elements itemsElement) {
+        depth = 2;
+        for (Element item : itemsElement
+                ) {
+            addLinkPage(url + "/" + item.attr("href"));
+            String content = scraper.getContentAsString(url + "/" + item.attr("href"));
+            System.out.println(content);
+            listOfAllContents.add(content);
+        }
+    }
+
+    public List<String> getContents() {
+        return this.listOfAllContents;
+    }
+
+
     public int getUniquePages() {
         return uniquePages.size();
     }
@@ -173,8 +141,13 @@ public class Crawler {
         return this.links;
     }
 
-//    public List<String> getListJSONObject() {
-//        JsonArray jsonArray;
-//        return listJSONObject;
-//    }
+    public boolean isConnect() {
+        Connection.Response response = Jsoup.connect(url).response();
+        if (response.statusCode() == 200) {
+            return true;
+        } else {
+            throw new IllegalArgumentException("Invalid URL/Connection");
+        }
+    }
+
 }
