@@ -31,7 +31,8 @@ public class ScraperTest {
         jsonParser = new JsonParser();
         TYPE_OF_CONTENT = "";
         CONTEXT_BOOK = "The Clean Coder: A Code of Conduct for Professional Programmers";
-        URL_FOR_TITLE = "http://localhost:8082/sample_site_to_crawl/details.php?id=302";
+        //URL_FOR_TITLE = "http://localhost:8082/sample_site_to_crawl/details.php?id=302";
+        URL_FOR_TITLE = "http://192.168.64.2/sample/details.php?id=302";
         CONTEXT_TITLE = "Elvis Forever";
     }
 

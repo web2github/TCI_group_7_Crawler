@@ -5,8 +5,13 @@ public class Movies extends AbstractContent {
     private String writers;
     private String stars;
 
-    public Movies(String context) {
+    //public Movies(String writers, String stars) {
+      //  this.writers=writers;
+        //this.stars = stars;
+    //}
 
+    public Movies(String context) {
+        super();
     }
 
 
@@ -17,6 +22,18 @@ public class Movies extends AbstractContent {
 
     //Method to return the Stars of the movie.
     public String getStars(){
+        return stars;
+    }
+
+    public String setWriters(String writers)
+    {
+        this.writers=writers;
+        return writers;
+    }
+
+    public String setStars(String stars)
+    {
+        this.stars=stars;
         return stars;
     }
 }

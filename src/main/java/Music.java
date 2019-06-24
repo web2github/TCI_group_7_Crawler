@@ -16,4 +16,10 @@ public class Music extends AbstractContent{
         return null;
     }
 
+    public String setArtist(String artist)
+    {
+        this.artist=artist;
+        return artist;
+    }
+
 }

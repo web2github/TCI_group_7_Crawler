@@ -11,8 +11,14 @@ public class Books extends AbstractContent {
     private String isbn;
     private List<String> authors;
 
-    public Books(String context) {
+    //public Books(String publisher, String isbn, List<String>authors) {
+        //this.publisher=publisher;
+        //this.isbn=isbn;
+        //this.authors=authors;
+    //}
 
+    public Books(String context) {
+        super();
     }
 
     //Method to return the authors of the book.
@@ -32,4 +38,24 @@ public class Books extends AbstractContent {
         return "ISBN:" +  isbn;
     }
 
+
+    public List<String> setAuthors()
+    {
+        this.authors=authors;
+        return authors;
+    }
+
+
+    public String setPublisher(String publisher)
+    {
+        this.publisher=publisher;
+        return publisher;
+    }
+
+
+    public String setISBN(String isbn)
+    {
+        this.isbn=isbn;
+        return "ISBN:" +  isbn;
+    }
 }

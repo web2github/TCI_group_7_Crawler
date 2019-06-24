@@ -4,11 +4,11 @@ import com.google.gson.JsonParser;
  * Gets and creates an JsonObject using the AbstractContent class.
  * Uses enumeration to obtain the create object.
  *
- *@author Robbert van den Berg
+ *
  * */
 public class ContentFactory {
     private static final JsonParser parser = new JsonParser();
-    private static JsonObject jsonObject;
+    public static JsonObject jsonObject = new JsonObject();
     private String typeOfContent;
     private String context;
 

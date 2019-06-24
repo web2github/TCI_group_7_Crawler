@@ -18,7 +18,8 @@ public class PointerTest {
 
     @Before
     public void setUp() {
-        pointer = new Pointer("http://localhost:8082/sample_site_to_crawl/");
+        //pointer = new Pointer("http://localhost:8082/sample_site_to_crawl/");
+        pointer = new Pointer("http://192.168.64.2/sample/");
 
     }
 

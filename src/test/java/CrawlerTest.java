@@ -12,7 +12,8 @@ import static org.junit.Assert.assertThat;
 
 public class CrawlerTest {
     private Crawler crawler;
-    private static final String VALID_URL = "http://localhost:8082/sample_site_to_crawl/";
+    //private static final String VALID_URL = "http://localhost:8082/sample_site_to_crawl/";
+    private static final String VALID_URL = "http://192.168.64.2/sample/";
     private static final String VALID_PAGE_CONTENT = "Valid content";
     private static final double VALID_TIME_ELAPSED = 12.12;
 
@@ -40,6 +41,7 @@ public class CrawlerTest {
     public void TimeElapsedIsNotNegative() {
         //ARRANGE
         //ACT
+        //crawler.crawl(VALID_URL, "");
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage("Time elapsed must be positive");
         //ASSERT
@@ -88,7 +90,8 @@ public class CrawlerTest {
     public void depthResultsIsZeroWhenCrawlingThroughOnePage() {
         //ARRANGE
         //ACT
-        crawler.crawl("", "");
+        //crawler.crawl("", "");
+        crawler.crawl(VALID_URL, "");
         //ASSERT
         assertEquals("site has more than one page", 1, crawler.getNumberOfPages());
         assertEquals(0, crawler.getDepth());
